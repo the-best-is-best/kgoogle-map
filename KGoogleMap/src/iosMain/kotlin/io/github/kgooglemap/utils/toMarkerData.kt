@@ -1,7 +1,6 @@
-package io.github.kgooglemap.ui
+package io.github.kgooglemap.utils
 
 import cocoapods.KGoogleMap.MarkerData
-import io.github.kgooglemap.utils.Markers
 import kotlinx.cinterop.ExperimentalForeignApi
 
 @OptIn(ExperimentalForeignApi::class)

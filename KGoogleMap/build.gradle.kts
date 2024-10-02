@@ -149,7 +149,7 @@ kotlin {
         ios.deploymentTarget = "15.0"  // Update this to the required version
 
         pod("KGoogleMap") {
-            version = "0.1.0-beta.13"
+            version = "0.1.0-beta.21"
             extraOpts += listOf("-compiler-option", "-fmodules")
 
         }
