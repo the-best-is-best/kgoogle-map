@@ -14,3 +14,4 @@ xcuserdata/
 Pods/
 *.jks
 *yarn.lock
+/simple/iosApp/Podfile.lock
