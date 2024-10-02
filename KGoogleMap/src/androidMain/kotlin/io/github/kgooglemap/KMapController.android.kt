@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.PolyUtil
 import com.google.maps.android.compose.CameraPositionState
 import io.github.kgooglemap.ui.CameraPosition
 import io.github.kgooglemap.utils.LatLng
@@ -59,46 +60,16 @@ actual class KMapController actual constructor(camera: CameraPosition, markers: 
 
     actual fun renderRoad(points: String) {
         // Decode the encoded polyline string to a list of LatLng points
-        val pointList = decodePolyline(points)
+//        val pointList = decodePolyline(points)
+        val decodedPoints: List<com.google.android.gms.maps.model.LatLng> = PolyUtil.decode(points).toList()
 
         // Update polyline options with the parsed points
         polylineOptions = PolylineOptions()
-            .addAll(pointList.map { GMapLatLng(it.latitude, it.longitude) })
+            .addAll(decodedPoints.map { GMapLatLng(it.latitude, it.longitude) })
             .width(10f)
             .color(android.graphics.Color.BLUE) // Choose your desired color
     }
 
-    private fun decodePolyline(encoded: String): List<LatLng> {
-        val poly = ArrayList<LatLng>()
-        var index = 0
-        val len = encoded.length
-        var lat = 0
-        var lng = 0
-        while (index < len) {
-            var b: Int
-            var shift = 0
-            var result = 0
-            do {
-                b = encoded[index++].code - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlat = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lat += dlat
-            shift = 0
-            result = 0
-            do {
-                b = encoded[index++].code - 63
-                result = result or (b and 0x1f shl shift)
-                shift += 5
-            } while (b >= 0x20)
-            val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
-            lng += dlng
-            val latLng = LatLng((lat.toDouble() / 1E5), (lng.toDouble() / 1E5))
-            poly.add(latLng)
-        }
-        return poly
-    }
 
 
     actual fun goToLocation(location: LatLng, zoom: Float) {

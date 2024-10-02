@@ -4,12 +4,12 @@ kotlin = "2.0.21-RC"
 compose = "1.7.0-beta02"
 agp = "8.7.0"
 androidx-activityCompose = "1.9.2"
-androidx-uiTest = "1.7.2"
+androidx-uiTest = "1.7.3"
 maven-publish = "0.29.0"
 googleMaps = "6.1.2"
 mapsSecret = "2.0.1"
 playServicesLocation = "21.3.0"
-#googleLocation = "21.3.0.1"
+googleMapUtils = "3.8.2"
 [libraries]
 
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -17,8 +17,8 @@ androidx-activityCompose = { module = "androidx.activity:activity-compose", vers
 androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
 google-maps = { module = "com.google.maps.android:maps-compose", version.ref = "googleMaps" }
+google-maps-utils = {module = "com.google.maps.android:android-maps-utils" , version.ref= "googleMapUtils"}
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
-#google-location = {module = "com.google.android.gms:play-services-location", version.ref="googleLocation"}
 
 
 [plugins]

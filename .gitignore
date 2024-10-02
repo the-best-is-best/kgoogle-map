@@ -15,3 +15,4 @@ Pods/
 *.jks
 *yarn.lock
 /simple/iosApp/Podfile.lock
+/local.defaults.properties

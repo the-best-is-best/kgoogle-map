@@ -138,5 +138,4 @@ compose.desktop {
 
 secrets {
     defaultPropertiesFileName = "local.defaults.properties"
-
 }

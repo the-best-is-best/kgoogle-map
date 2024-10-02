@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.native.cocoapods)
-//    alias(libs.plugins.map.secret)
     id("maven-publish")
     id("signing")
     alias(libs.plugins.maven.publish)
@@ -146,7 +145,7 @@ kotlin {
         ios.deploymentTarget = "15.0"  // Update this to the required version
 
         pod("KGoogleMap") {
-            version = "0.1.0-beta.21"
+            version = "0.1.0-rc.1"
             extraOpts += listOf("-compiler-option", "-fmodules")
 
         }
@@ -183,6 +182,7 @@ kotlin {
             implementation(libs.google.maps)
             implementation(libs.play.services.location)
             implementation(libs.accompanist.permissions)
+            implementation(libs.google.maps.utils)
         }
 
         jvmMain.dependencies {
