@@ -5,10 +5,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
-import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-import java.net.URI
-import java.net.URL
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -16,6 +12,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.native.cocoapods)
+//    alias(libs.plugins.map.secret)
     id("maven-publish")
     id("signing")
     alias(libs.plugins.maven.publish)
@@ -183,6 +180,9 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.uiTooling)
             implementation(libs.androidx.activityCompose)
+            implementation(libs.google.maps)
+            implementation(libs.play.services.location)
+            implementation(libs.accompanist.permissions)
         }
 
         jvmMain.dependencies {
@@ -201,7 +201,7 @@ kotlin {
 
 android {
     namespace = "io.github.KGoogleMap"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
@@ -216,6 +216,7 @@ android {
         }
     }
 }
+
 compose.desktop {
     application {
         mainClass = "MainKt"

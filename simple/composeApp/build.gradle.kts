@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
-
+    alias(libs.plugins.map.secret)
 }
 
 kotlin {
@@ -88,13 +88,12 @@ kotlin {
 
 android {
     namespace = "io.github.sample"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 26
-        targetSdk = 34
-
-        applicationId = "io.github.sample.androidApp"
+        minSdk = 21
+        targetSdk = 35
+        applicationId = "com.example.booking_app"
         versionCode = 1
         versionName = "1.0.0"
 
@@ -135,4 +134,9 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+secrets {
+    defaultPropertiesFileName = "local.defaults.properties"
+
 }

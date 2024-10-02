@@ -2,14 +2,20 @@ package io.github.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddReaction
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.LocationCity
-import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Pin
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -34,11 +40,12 @@ import io.github.sample.theme.AppTheme
 
 @Composable
 internal fun App() = AppTheme {
-    val mapController = rememberSaveable {
+    val mapController = remember {
         KMapController(
             camera = CameraPosition(
                 //position = LatLng(30.08167, 31.248462),
-                position = LatLng(34.0545122, -118.2377978), zoom = 10f)
+                position = LatLng(30.0781597, 31.248458), zoom = 10f
+            )
         )
     }
 
@@ -124,7 +131,7 @@ internal fun App() = AppTheme {
                 // Fetch road button
                 Button(
                     onClick = {
-
+                        mapController.goToLocation(LatLng(34.0515659, -118.2424561), zoom = 10f)
                         val rawString = """
     eir~FdezuOxyFzfFl`G|qZvtSzqo@d}EhlLtqIdjFhrTfvEdca@{_@p{\\~`\\f}MprT~qRbyPnvObbXd_TxaEdxYxjRxvUnz\\bDfeLbpLxv@pmLroD`fTxrYfkTti\\xp@baMj_MoG|xNrlNpiL~cKn`OloFroRbk@lmDn_FnxHnQnz^~Thlo@uVlcc@|rQrnM~lAvlP|sH~qUlkPbzRxvE`cF~rPn_K~b`@tbDpx\\toK|_g@ldD|s_@piIzwc@nzNtlNdrKxoTtkXpeXrsO`l_@brWbkjAptBxoa@npNfiRv_QtcbAxpBlwb@rt_@ry`@pcKjtPpuPj`H`mNpsFjzHfpN~hIdfbAp}JfxY`Fxo^vdUnhq@}k@~`bAkMvli@cClxIjmGfHblG~bRhtF|eI~jFffQzsLldRr`WdrKxtKxb_@zlNrxU|qUpfYdwNpzP|rRxsc@zgWfdYtdBrqR|~Iz~Qv`ApvRntK`jI`cZz}n@nsW`mcA`}WndvB~iCdiVpjJnlErfNplA`i@bcGojCpsl@yeEn|l@{hDtsu@tl@lxs@~~DditAjcJzrf@~qIr`l@bbJrme@~rI|zC~dBfrO|yEdne@qAj{y@Qrsj@diAdns@l}EpnYwmDjn|@ywAbso@~kB|au@`{Alj|@csLzxcBl^|cr@fyJvwd@rxNxnlAyuJhqWjtCbmy@lwNjwpA`cSdimApgBxeNwbCx~_@{dB|y~@cyC|tfBxU~di@inFpxi@_bLpad@~wEbcNkJdxTwkDdeX`aHxh\\pgKlhs@r]`c_@imGdjUeCvnYajFfnN`Gd}c@u_Unm\\itMldMinIpgBadIzhLskDdy\\}iFz|UuvPnfo@v_A`}n@nvR~da@pdS`qUfnDljY|qLrbRdwO|ig@jtKt}k@frM~qo@~~JpwS~bA~pSgeGbvQc{Bzib@yiWzkuAecD`dh@mjKnhf@qwBl_ZzpDn}Wg_CrfUonH~pVpA|bRapAthi@n|FbgPnd@|p[yi@vjVqzHrhd@cgG|zl@jyE~g^|oLjyYvvBprWlpDrtd@ahHbyhApiBteSxpNzkHjtw@|yDjaPrmTzu@tqZjv@f_TuyGjxL{yMlcFafGh{IxDthNpxC|nZvxBzyUnhEpieAdsN|zw@qmAblk@t}Bhb^gvA|ml@{vPjweAkkDhpj@mmFnyZ`eAnsLjxKbfDnhUnrTdaSjtH``m@f`b@xyBbyGrjJ_|DxyGcyD`~Gfe@drNluRd`GlaC}cBfgObcAhh]vM`q`@|oBvgv@
 """.trimIndent()
