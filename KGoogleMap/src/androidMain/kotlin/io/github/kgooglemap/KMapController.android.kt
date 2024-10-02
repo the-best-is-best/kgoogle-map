@@ -64,7 +64,7 @@ actual class KMapController actual constructor(camera: CameraPosition, markers: 
         // Update polyline options with the parsed points
         polylineOptions = PolylineOptions()
             .addAll(pointList.map { GMapLatLng(it.latitude, it.longitude) })
-            .width(5f)
+            .width(10f)
             .color(android.graphics.Color.BLUE) // Choose your desired color
     }
 
