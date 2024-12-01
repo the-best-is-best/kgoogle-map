@@ -6,6 +6,8 @@ import cocoapods.GooglePlaces.GMSPlace
 import cocoapods.GooglePlaces.GMSPlaceFieldCoordinate
 import cocoapods.GooglePlaces.GMSPlaceFieldFormattedAddress
 import cocoapods.GooglePlaces.GMSPlaceFieldName
+import cocoapods.GooglePlaces.GMSPlaceFieldPhoneNumber
+import cocoapods.GooglePlaces.GMSPlaceFieldWebsite
 import cocoapods.GooglePlaces.GMSPlacesClient
 import io.github.kgooglemap.utils.AutocompleteSuggestion
 import io.github.kgooglemap.utils.PlaceDetails
@@ -62,9 +64,9 @@ actual class KPlacesHelper actual constructor() {
         // Define which fields you want to retrieve.
         val placeFields: ULong = GMSPlaceFieldName or
                 GMSPlaceFieldFormattedAddress or
-                GMSPlaceFieldCoordinate
-//                GMSPlaceFieldPhoneNumber or
-//                GMSPlaceFieldWebsite
+                GMSPlaceFieldCoordinate or
+                GMSPlaceFieldPhoneNumber or
+                GMSPlaceFieldWebsite
 
         placesClient.fetchPlaceFromPlaceID(
             placeId,

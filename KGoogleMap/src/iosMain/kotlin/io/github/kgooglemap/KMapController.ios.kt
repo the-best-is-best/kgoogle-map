@@ -29,7 +29,10 @@ actual class KMapController actual constructor(camera: CameraPosition , markers:
 
     actual fun renderRoad(points: String) {
         println("render road and map is: ${mapView != null} and points: $points")
-        mapView?.renderRoad(points)
+        val newEncodedString: String = points.replace("\\\\", "\\")
+
+        mapView?.renderRoad(newEncodedString)
+
     }
 
     actual fun resetCamera() {
