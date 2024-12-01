@@ -1,16 +1,16 @@
 [versions]
-accompanistPermissions = "0.30.1"
+accompanistPermissions = "0.36.0"
 kotlin = "2.1.0"
 compose = "1.7.1"
 agp = "8.7.0"
 androidx-activityCompose = "1.9.3"
 androidx-uiTest = "1.7.5"
-maven-publish = "0.29.0"
-googleMaps = "6.1.2"
+maven-publish = "0.30.0"
+googleMaps = "6.2.1"
 mapsSecret = "2.0.1"
 mapPlaces = "4.1.0"
 playServicesLocation = "21.3.0"
-googleMapUtils = "3.8.2"
+googleMapUtils = "3.9.0"
 [libraries]
 
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
