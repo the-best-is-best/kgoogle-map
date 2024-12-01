@@ -4,16 +4,12 @@ import cocoapods.GoogleMaps.GMSCameraPosition
 import cocoapods.KGoogleMap.KMapView
 import cocoapods.KGoogleMap.MarkerData
 import io.github.kgooglemap.ui.CameraPosition
-import io.github.kgooglemap.utils.toMarkerData
 import io.github.kgooglemap.utils.LatLng
 import io.github.kgooglemap.utils.Markers
-import kotlinx.cinterop.ExperimentalForeignApi
+import io.github.kgooglemap.utils.toMarkerData
 import kotlinx.cinterop.memScoped
 import platform.CoreLocation.CLLocationCoordinate2DMake
-import platform.Foundation.NSNumber
-import platform.posix.boolean_t
 
-@OptIn(ExperimentalForeignApi::class)
 actual class KMapController actual constructor(camera: CameraPosition , markers: List<Markers>?) {
     private var mapView: KMapView? = null
      val markers: List<MarkerData>? = if(markers.isNullOrEmpty()) null

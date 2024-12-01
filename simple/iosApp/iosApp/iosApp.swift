@@ -11,6 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
+            
             window.rootViewController = MainKt.MainViewController()
             window.makeKeyAndVisible()
             

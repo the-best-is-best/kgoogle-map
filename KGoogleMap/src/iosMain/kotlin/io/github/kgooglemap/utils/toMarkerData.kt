@@ -1,9 +1,7 @@
 package io.github.kgooglemap.utils
 
 import cocoapods.KGoogleMap.MarkerData
-import kotlinx.cinterop.ExperimentalForeignApi
 
-@OptIn(ExperimentalForeignApi::class)
 fun List<Markers>.toMarkerData(): List<MarkerData> {
     return this.map { marker ->
         MarkerData(

@@ -41,9 +41,8 @@ actual class KPlacesHelper actual constructor() {
     actual fun fetchPlaceDetails(placeId: String, onResult: (PlaceDetails?) -> Unit) {
         val placeFields = listOf(
             com.google.android.libraries.places.api.model.Place.Field.ID,
-            com.google.android.libraries.places.api.model.Place.Field.NAME,
-            com.google.android.libraries.places.api.model.Place.Field.LAT_LNG,
-            com.google.android.libraries.places.api.model.Place.Field.ADDRESS
+            com.google.android.libraries.places.api.model.Place.Field.FORMATTED_ADDRESS,
+            com.google.android.libraries.places.api.model.Place.Field.LOCATION,
         )
 
         val request = FetchPlaceRequest.builder(placeId, placeFields).build()
@@ -54,10 +53,10 @@ actual class KPlacesHelper actual constructor() {
                 onResult(
                     PlaceDetails(
                         id = place.id,
-                        name = place.name,
-                        address = place.address,
-                        latitude = place.latLng?.latitude,
-                        longitude = place.latLng?.longitude
+                        name = place.displayName,
+                        address = place.formattedAddress,
+                        latitude = (place.location?.latitude ?: 0.0),
+                        longitude = place.location?.longitude
                     )
                 )
             }

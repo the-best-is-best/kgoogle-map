@@ -6,11 +6,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.UIKitView
 import cocoapods.KGoogleMap.KMapView
-import cocoapods.KGoogleMap.MarkerData
 import io.github.kgooglemap.KMapController
-import kotlinx.cinterop.ExperimentalForeignApi
 
-@OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun KGoogleMapView(controller: KMapController) {
 

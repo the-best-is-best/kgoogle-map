@@ -154,7 +154,7 @@ kotlin {
         }
 
         pod("GoogleMaps"){
-            version = "9.1.1.0"
+            version = "9.2.0"
             extraOpts += listOf("-compiler-option", "-fmodules")
 
         }
@@ -165,6 +165,17 @@ kotlin {
 
 
     sourceSets {
+        all {
+            languageSettings.apply {
+
+                progressiveMode = true
+                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+                if (name.lowercase().contains("ios")) {
+                    optIn("kotlinx.cinterop.ExperimentalForeignApi")
+                    optIn("kotlinx.cinterop.BetaInteropApi")
+                }
+            }
+        }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
