@@ -1,5 +1,6 @@
 package io.github.kgooglemap
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -59,17 +60,26 @@ actual class KMapController actual constructor(camera: CameraPosition, markers: 
     }
 
     actual fun renderRoad(points: String) {
-        // Decode the encoded polyline string to a list of LatLng points
-//        val pointList = decodePolyline(points)
-        val decodedPoints: List<com.google.android.gms.maps.model.LatLng> = PolyUtil.decode(points).toList()
+        if (points.isEmpty() || points.length < 2) {
+            // Handle invalid or empty points string
+            Log.e("renderRoad", "Invalid points string")
+            return
+        }
 
-        // Update polyline options with the parsed points
-        polylineOptions = PolylineOptions()
-            .addAll(decodedPoints.map { GMapLatLng(it.latitude, it.longitude) })
-            .width(10f)
-            .color(android.graphics.Color.BLUE) // Choose your desired color
+        try {
+            val newEncodedString: String = points.replace("\\\\", "\\")
+
+            val decodedPoints = PolyUtil.decode(newEncodedString)
+
+            // Update polyline options with the parsed points
+            polylineOptions = PolylineOptions()
+                .addAll(decodedPoints.map { GMapLatLng(it.latitude, it.longitude) })
+                .width(10f)
+                .color(android.graphics.Color.BLUE) // Choose your desired color
+        } catch (e: Exception) {
+            Log.e("renderRoad", "Error decoding points string", e)
+        }
     }
-
 
 
     actual fun goToLocation(location: LatLng, zoom: Float) {

@@ -145,9 +145,12 @@ kotlin {
         ios.deploymentTarget = "15.0"  // Update this to the required version
 
         pod("KGoogleMap") {
-            version = "0.1.0-rc.1"
+            version = "0.1.1-rc.1"
             extraOpts += listOf("-compiler-option", "-fmodules")
-
+        }
+        pod("GooglePlaces") {
+            version = "9.2.0"
+            extraOpts += listOf("-compiler-option", "-fmodules")
         }
 
         pod("GoogleMaps"){
@@ -183,6 +186,11 @@ kotlin {
             implementation(libs.play.services.location)
             implementation(libs.accompanist.permissions)
             implementation(libs.google.maps.utils)
+
+            implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.1.0"))
+
+            implementation(libs.map.places)
+
         }
 
         jvmMain.dependencies {
@@ -204,7 +212,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
 
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_1_8
@@ -213,6 +221,7 @@ android {
         buildFeatures {
             //enables a Compose tooling support in the AndroidStudio
             compose = true
+
         }
     }
 }

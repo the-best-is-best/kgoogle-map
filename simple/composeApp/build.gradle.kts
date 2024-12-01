@@ -91,7 +91,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         applicationId = "com.example.booking_app"
         versionCode = 1
