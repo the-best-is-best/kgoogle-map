@@ -2,6 +2,7 @@ package io.github.kgooglemap
 
 import cocoapods.GooglePlaces.GMSAutocompleteFilter
 import cocoapods.GooglePlaces.GMSAutocompletePrediction
+import cocoapods.GooglePlaces.GMSAutocompleteSessionToken
 import cocoapods.GooglePlaces.GMSPlace
 import cocoapods.GooglePlaces.GMSPlaceFieldCoordinate
 import cocoapods.GooglePlaces.GMSPlaceFieldFormattedAddress
@@ -30,13 +31,12 @@ actual class KPlacesHelper actual constructor() {
             placesClient.findAutocompletePredictionsFromQuery(
                 query,
                 filter,
-                null
+                GMSAutocompleteSessionToken.new()
             ) { results: List<*>?, error: NSError? ->
                 if (error != null || results == null) {
                     onResult(emptyList())
                     return@findAutocompletePredictionsFromQuery
                 }
-
                 val suggestions = (results as List<GMSAutocompletePrediction>).map { prediction ->
                     AutocompleteSuggestion(
                         placeId = prediction.placeID,

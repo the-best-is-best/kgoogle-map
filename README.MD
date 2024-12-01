@@ -21,13 +21,13 @@ KGoogleMap is available on `mavenCentral()`.
 ## Install
 
 ```kotlin
-implementation("io.github.the-best-is-best:kgoogle-map:1.0.0-rc1")
+implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc1")
 ```
 
 ## Need add this in pod file if not exist run ` pod init `
 
 ```pod
- pod 'KGoogleMap' , '0.1.0-rc.1'
+  pod 'KGoogleMap', '0.1.1-rc.1'
 ```
 
 ## How to use it
@@ -41,6 +41,12 @@ fun MainViewController(): UIViewController
     return ComposeUIViewController { App() }
 }
 
+```
+
+### Second in android Main
+
+```kotlin
+AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
 ```
 
 ### in commonMain
@@ -99,4 +105,45 @@ mapController.renderRoad(points) // for render poly
 
 
  mapController.showRoad(show) // display poly or hide it
+```
+
+## Google places
+
+- Note no ui for search available make custom ui
+
+### Functionality
+
+```kotlin
+expect class KPlacesHelper() {
+    /**
+     * Fetches autocomplete suggestions for a query string.
+     *
+     * @param query The search query string.
+     * @param onResult A callback invoked with a list of suggestions or an empty list if no suggestions are found.
+     */
+    fun fetchSuggestions(query: String, onResult: (List<AutocompleteSuggestion>) -> Unit)
+
+    /**
+     * Fetches detailed information about a place given its place ID.
+     *
+     * @param placeId The ID of the place.
+     * @param onResult A callback invoked with place details or `null` if the fetch operation fails.
+     */
+    fun fetchPlaceDetails(placeId: String, onResult: (PlaceDetails?) -> Unit)
+
+}
+```
+
+### How use it
+
+```kotlin
+  KPlacesHelper().fetchSuggestions(query = "Ramses") {
+                    print(it.size)
+                    val sizeAddress = it.size
+                    if (sizeAddress > 0) {
+                        println(KPlacesHelper().fetchPlaceDetails(it[0].placeId, {
+                            println("data address selected lat ${it?.latitude}")
+                        }))
+                    }
+                }
 ```

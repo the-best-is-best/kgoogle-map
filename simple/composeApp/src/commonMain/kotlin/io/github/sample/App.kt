@@ -65,10 +65,11 @@ internal fun App() = AppTheme {
         ) {
             ElevatedButton(onClick = {
                 KPlacesHelper().fetchSuggestions(query = "Ramses") {
+                    print(it.size)
                     val sizeAddress = it.size
                     if (sizeAddress > 0) {
                         println(KPlacesHelper().fetchPlaceDetails(it[0].placeId, {
-                            println("data address selected lat ${it?.address}")
+                            println("data address selected lat ${it?.latitude}")
                         }))
                     }
                 }
