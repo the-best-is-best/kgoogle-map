@@ -1,23 +1,28 @@
 package io.github.kgooglemap.services
 
-import android.content.Context
 import android.location.Location
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
+import io.github.kgooglemap.AndroidKGoogleMap
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 internal class MyLocationServices {
-    fun getLocation(context: Context, onLocationFetched: (LatLng?) -> Unit) {
+    suspend fun getLocation(): Location? {
         val fusedLocationClient: FusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(context)
+            LocationServices.getFusedLocationProviderClient(AndroidKGoogleMap.getActivity())
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                val userLatLng = LatLng(location.latitude, location.longitude)
-                println("latitude: ${location.latitude} - long: ${location.longitude}")
-                onLocationFetched(userLatLng)
-            } else {
-                onLocationFetched(null) // No location available
+        return suspendCancellableCoroutine { continuation ->
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    continuation.resume(location)
+                } else {
+                    continuation.resume(null) // No location available
+                }
+            }
+            fusedLocationClient.lastLocation.addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
             }
         }
     }

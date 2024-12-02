@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.native.cocoapods).apply(false)
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.map.secret).apply(false)
+    alias(libs.plugins.kotlinx.serialization).apply(false)
 
     alias(libs.plugins.maven.publish)
 }

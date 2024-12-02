@@ -1,6 +1,5 @@
 import com.android.build.api.dsl.ManagedVirtualDevice
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
@@ -11,6 +10,8 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.map.secret)
+    alias(libs.plugins.kotlinx.serialization)
+
 }
 
 kotlin {
@@ -62,7 +63,17 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.lifecycle.viewmodel.compose)
+
             implementation(project(":KGoogleMap"))
+
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.serialization)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.serialization.json)
+
         }
 
         commonTest.dependencies {
@@ -74,16 +85,26 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.uiTooling)
             implementation(libs.androidx.activityCompose)
-        }
-
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.androidx.appcompat)
         }
 
         iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+
         }
 
     }
+}
+
+dependencies {
+
+    commonMainApi("dev.icerock.moko:permissions:0.18.1")
+
+    // compose multiplatform
+    commonMainApi("dev.icerock.moko:permissions-compose:0.18.1") // permissions api + compose extensions
+
+    commonTestImplementation("dev.icerock.moko:permissions-test:0.18.1")
 }
 
 android {
@@ -124,17 +145,6 @@ android {
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "io.github.sample.desktopApp"
-            packageVersion = "1.0.0"
-        }
-    }
-}
 
 secrets {
     defaultPropertiesFileName = "local.defaults.properties"
