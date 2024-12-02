@@ -99,12 +99,12 @@ kotlin {
 
 dependencies {
 
-    commonMainApi("dev.icerock.moko:permissions:0.18.1")
+    commonMainApi(libs.permissions)
 
     // compose multiplatform
-    commonMainApi("dev.icerock.moko:permissions-compose:0.18.1") // permissions api + compose extensions
+    commonMainApi(libs.permissions.compose) // permissions api + compose extensions
 
-    commonTestImplementation("dev.icerock.moko:permissions-test:0.18.1")
+    commonTestImplementation(libs.permissions.test)
 }
 
 android {

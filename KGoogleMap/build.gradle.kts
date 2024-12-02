@@ -198,7 +198,7 @@ kotlin {
             implementation(libs.accompanist.permissions)
             implementation(libs.google.maps.utils)
 
-            implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.1.0"))
+            implementation(libs.kotlin.bom)
 
             implementation(libs.map.places)
 

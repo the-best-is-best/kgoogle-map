@@ -75,7 +75,6 @@ internal fun App() = AppTheme {
     }
     val viewModel = GoogleMapViewModel()
     val scope = rememberCoroutineScope()
-
     if (permissionLocation) {
 
         Column(

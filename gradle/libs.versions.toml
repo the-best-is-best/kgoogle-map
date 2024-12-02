@@ -5,17 +5,20 @@ compose = "1.7.1"
 agp = "8.7.0"
 androidx-activityCompose = "1.9.3"
 androidx-uiTest = "1.7.5"
+kotlinBom = "2.1.0"
 lifecycleViewmodelCompose = "2.8.2"
 maven-publish = "0.30.0"
 googleMaps = "6.2.1"
 mapsSecret = "2.0.1"
 mapPlaces = "4.1.0"
+permissions = "0.18.1"
 playServicesLocation = "21.3.0"
 googleMapUtils = "3.9.0"
 ktor = "3.0.0"
 slf4jSimple = "2.0.16"
 kotlinx-serialization = "1.7.3"
 appcompat = "1.7.0"
+
 [libraries]
 
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -24,8 +27,12 @@ androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", versi
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
 google-maps = { module = "com.google.maps.android:maps-compose", version.ref = "googleMaps" }
 google-maps-utils = {module = "com.google.maps.android:android-maps-utils" , version.ref= "googleMapUtils"}
+kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
 lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 map-places = { module = "com.google.android.libraries.places:places", version.ref = "mapPlaces" }
+permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
+permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
+permissions-test = { module = "dev.icerock.moko:permissions-test", version.ref = "permissions" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

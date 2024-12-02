@@ -5,6 +5,6 @@ import platform.UIKit.UIViewController
 
 fun MainViewController(): UIViewController
 {
-    IOSKGoogleMap.init("AIzaSyCF7KfFT1hqtVyfX4XQira2QPGZ9uxpclk")
+    IOSKGoogleMap.init("")
     return ComposeUIViewController { App() }
 }

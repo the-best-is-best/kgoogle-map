@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.UIKitView
+import cocoapods.GoogleMaps.GMSCameraPosition
 import cocoapods.KGoogleMap.KMapView
 import io.github.kgooglemap.KMapController
 
@@ -21,7 +22,11 @@ actual fun KGoogleMapView(controller: KMapController) {
     }
 
     UIKitView(factory = {
-        mapView = KMapView(controller.initCamera as objcnames.classes.GMSCameraPosition?, controller.markers, true)
+        mapView = KMapView(
+            GMSCameraPosition(0.0, 0.0, 0f) as objcnames.classes.GMSCameraPosition,
+            controller.markers,
+            true
+        )
         mapView!! // Return the map view
     },
         modifier = Modifier.fillMaxSize()

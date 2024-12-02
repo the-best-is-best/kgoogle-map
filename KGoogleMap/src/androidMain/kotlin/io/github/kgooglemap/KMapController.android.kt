@@ -63,24 +63,17 @@ actual class KMapController actual constructor(camera: CameraPosition?, markers:
             com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
                 com.google.android.gms.maps.model.LatLng(
                     accessCamera!!.position!!.latitude, accessCamera!!.position!!.longitude
-                ), accessCamera!!.zoom + 5
+                ), accessCamera!!.zoom
             )
         } else {
             val location = MyLocationServices().getLocation()
-            if (location != null) {
-                com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
-                    com.google.android.gms.maps.model.LatLng(
-                        location.latitude,
-                        location.longitude
-                    ),
-                    accessCamera?.zoom ?: 15f
-                )
-            } else {
-                // Default camera position if location is not yet available
-                com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
-                    com.google.android.gms.maps.model.LatLng(0.0, 0.0), 15f
-                )
-            }
+            com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
+                com.google.android.gms.maps.model.LatLng(
+                    location!!.latitude,
+                    location.longitude
+                ),
+                accessCamera?.zoom ?: 15f
+            )
         }
     }
 
@@ -92,8 +85,7 @@ actual class KMapController actual constructor(camera: CameraPosition?, markers:
         }
 
         try {
-            val newEncodedString: String = points.replace("\\\\", "\\")
-            val decodedPoints = PolyUtil.decode(newEncodedString)
+            val decodedPoints = PolyUtil.decode(points)
 
             // Update polyline options with the parsed points
             polylineOptions = PolylineOptions()
