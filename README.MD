@@ -17,6 +17,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.the-best-is-best/kgoogle-map)](https://central.sonatype.com/artifact/io.github.the-best-is-best/kgoogle-map)
 
 KGoogleMap is available on `mavenCentral()`.
+![Demo](git_assets/video.gif)
 
 ## Install
 
@@ -79,7 +80,6 @@ AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
     }
 
 if (permissionLocation) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
