@@ -21,7 +21,7 @@ KGoogleMap is available on `mavenCentral()`.
 ## Install
 
 ```kotlin
-implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc1")
+implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc2")
 ```
 
 ## Need add this in pod file if not exist run ` pod init `
@@ -55,12 +55,30 @@ AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
  val mapController = remember {
         KMapController(
             camera = CameraPosition(
-                position = LatLng(30.0781597, 31.248458), zoom = 10f
+                position = null, zoom = 10f
             )
         )
     }
 
-    var showUserLocation by rememberSaveable {mutableStateOf(true) }
+    var permissionLocation by remember { mutableStateOf(false) }
+
+    val factory = rememberPermissionsControllerFactory()
+    val controller = remember(factory) {
+        factory.createPermissionsController()
+    }
+
+    BindEffect(controller)
+
+
+    LaunchedEffect(permissionLocation) {
+        controller.providePermission(Permission.LOCATION)
+        permissionLocation = controller.isPermissionGranted(Permission.LOCATION)
+        if (permissionLocation) {
+            mapController.resetCamera()
+        }
+    }
+
+if (permissionLocation) {
 
     Column(
         modifier = Modifier
@@ -77,6 +95,7 @@ AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
 
         }
     }   
+}
 ```
 
 ### controller functionality
