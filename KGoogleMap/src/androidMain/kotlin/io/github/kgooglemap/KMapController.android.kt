@@ -1,6 +1,5 @@
 package io.github.kgooglemap
 
-import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +18,6 @@ import kotlinx.coroutines.launch
 import com.google.android.gms.maps.model.LatLng as GMapLatLng
 
 actual class KMapController actual constructor(camera: CameraPosition?, markers: List<Markers>?) {
-    private var currentUserLocation: Location? = null
     private var accessCamera = camera
 
 
@@ -58,7 +56,7 @@ actual class KMapController actual constructor(camera: CameraPosition?, markers:
     actual fun clearMarkers() {
         currentMarker = listOf()
     }
-    internal suspend fun getCameraPosition(): com.google.android.gms.maps.model.CameraPosition {
+    private suspend fun getCameraPosition(): com.google.android.gms.maps.model.CameraPosition {
         return if (accessCamera?.position != null) {
             com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
                 com.google.android.gms.maps.model.LatLng(
@@ -67,13 +65,23 @@ actual class KMapController actual constructor(camera: CameraPosition?, markers:
             )
         } else {
             val location = MyLocationServices().getLocation()
-            com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
-                com.google.android.gms.maps.model.LatLng(
-                    location!!.latitude,
-                    location.longitude
-                ),
-                accessCamera?.zoom ?: 15f
-            )
+            if (location != null) {
+                com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
+                    com.google.android.gms.maps.model.LatLng(
+                        location.latitude,
+                        location.longitude
+                    ),
+                    accessCamera?.zoom ?: 15f
+                )
+            } else {
+                com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
+                    com.google.android.gms.maps.model.LatLng(
+                        0.0,
+                        0.0
+                    ),
+                    accessCamera?.zoom ?: 15f
+                )
+            }
         }
     }
 
