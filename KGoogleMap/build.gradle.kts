@@ -198,6 +198,8 @@ kotlin {
             implementation(libs.accompanist.permissions)
             implementation(libs.google.maps.utils)
 
+            implementation(libs.klocation)
+
             implementation(project.dependencies.platform(libs.kotlin.bom))
 
             implementation(libs.map.places)

@@ -1,5 +1,6 @@
 [versions]
 accompanistPermissions = "0.36.0"
+klocation = "1.0.1"
 kotlin = "2.1.0"
 compose = "1.7.1"
 agp = "8.7.0"
@@ -27,6 +28,7 @@ androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", versi
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
 google-maps = { module = "com.google.maps.android:maps-compose", version.ref = "googleMaps" }
 google-maps-utils = {module = "com.google.maps.android:android-maps-utils" , version.ref= "googleMapUtils"}
+klocation = { module = "io.github.the-best-is-best:klocation", version.ref = "klocation" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
 lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 map-places = { module = "com.google.android.libraries.places:places", version.ref = "mapPlaces" }

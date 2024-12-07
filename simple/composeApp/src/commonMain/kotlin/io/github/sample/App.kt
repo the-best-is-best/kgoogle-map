@@ -38,7 +38,6 @@ import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import io.github.kgooglemap.KMapController
-import io.github.kgooglemap.ui.CameraPosition
 import io.github.kgooglemap.ui.KGoogleMapView
 import io.github.kgooglemap.utils.LatLng
 import io.github.kgooglemap.utils.Markers
@@ -50,9 +49,8 @@ import kotlinx.coroutines.launch
 internal fun App() = AppTheme {
     val mapController = remember {
         KMapController(
-            camera = CameraPosition(
-                position = null, zoom = 10f
-            )
+            zoom = 15f
+
         )
     }
 
@@ -69,13 +67,14 @@ internal fun App() = AppTheme {
     LaunchedEffect(permissionLocation) {
         controller.providePermission(Permission.LOCATION)
         permissionLocation = controller.isPermissionGranted(Permission.LOCATION)
-        if (permissionLocation) {
-            mapController.resetCamera()
-        }
+//        if (permissionLocation) {
+//            mapController.resetCamera()
+//        }
+
     }
+
     val viewModel = GoogleMapViewModel()
     val scope = rememberCoroutineScope()
-    if (permissionLocation) {
 
         Column(
             modifier = Modifier
@@ -204,5 +203,5 @@ internal fun App() = AppTheme {
                 }
             }
         }
-    }
+    // }
 }

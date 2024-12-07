@@ -1,10 +1,9 @@
 package io.github.kgooglemap
 
-import io.github.kgooglemap.ui.CameraPosition
 import io.github.kgooglemap.utils.LatLng
 import io.github.kgooglemap.utils.Markers
 
-expect class KMapController(camera: CameraPosition? = null, markers: List<Markers>? = null) {
+expect class KMapController(zoom: Float = 15f, markers: List<Markers>? = null) {
      fun resetCamera()
      fun renderRoad(points: String)
      fun addMarkers(markers: List<Markers>)

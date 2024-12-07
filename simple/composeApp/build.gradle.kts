@@ -3,6 +3,7 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -42,6 +43,8 @@ kotlin {
 //        browser()
 //        binaries.executable()
 //    }
+    val xcframeworkName = "CompposeApp"
+    val xcf = XCFramework(xcframeworkName)
 
     listOf(
         iosX64(),
@@ -49,7 +52,9 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = xcframeworkName
+            binaryOption("bundleId", "org.example.${xcframeworkName}")
+            xcf.add(this)
             isStatic = true
         }
     }
@@ -74,6 +79,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.serialization.json)
 
+
         }
 
         commonTest.dependencies {
@@ -87,6 +93,7 @@ kotlin {
             implementation(libs.androidx.activityCompose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.appcompat)
+
         }
 
         iosMain.dependencies {
