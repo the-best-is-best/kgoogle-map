@@ -1,6 +1,5 @@
 package io.github.kgooglemap
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,10 +16,15 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import com.google.android.gms.maps.model.LatLng as GMapLatLng
 
-actual class KMapController actual constructor(zoom: Float, markers: List<Markers>?) {
+actual class KMapController actual constructor(
+    zoom: Float,
+    initPosition: LatLng?,
+    markers: List<Markers>?
+) {
 
 
-    private var zoom = zoom
+    private val zoom = zoom
+    private val initPosition = initPosition
     internal var cameraPositionState: CameraPositionState? = null
 
     // Public getter for markers
@@ -30,9 +34,23 @@ actual class KMapController actual constructor(zoom: Float, markers: List<Marker
     var showRoad by mutableStateOf(true)
     var polylineOptions by mutableStateOf(PolylineOptions())
 
-    @SuppressLint("SuspiciousIndentation")
     fun initCamera(cameraPosition: CameraPositionState) {
         this.cameraPositionState = cameraPosition
+
+        if (initPosition != null) {
+            CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
+
+                cameraPositionState?.animate(
+                    com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
+                        com.google.android.gms.maps.model.LatLng(
+                            initPosition.latitude,
+                            initPosition.longitude
+                        ),
+                        zoom // Adjust the zoom level as needed
+                    )
+                )
+            }
+        }
 
     }
 

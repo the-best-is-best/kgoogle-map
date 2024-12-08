@@ -22,13 +22,13 @@ KGoogleMap is available on `mavenCentral()`.
 ## Install
 
 ```kotlin
-implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc2")
+implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc4")
 ```
 
 ## Need add this in pod file if not exist run ` pod init `
 
 ```pod
-  pod 'KGoogleMap', '0.1.1-rc.1'
+  pod 'KGoogleMap', '0.1.2-rc.1'
 ```
 
 ## How to use it
@@ -55,6 +55,7 @@ AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
 ```kotlin
    val mapController = remember {
     KMapController(
+        initPosition = null
         zoom = 15f
 
     )

@@ -14,14 +14,35 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import platform.CoreLocation.CLLocationCoordinate2DMake
 
-actual class KMapController actual constructor(zoom: Float, markers: List<Markers>?) {
+actual class KMapController actual constructor(
+    zoom: Float,
+    initPosition: LatLng?,
+    markers: List<Markers>?
+) {
     private var mapView: KMapView? = null
     internal val markers: List<MarkerData>? =
         if (markers.isNullOrEmpty()) null else markers.toMarkerData()
     val zoom = zoom
+    private val initPosition: LatLng? = initPosition
 
     internal fun init(mapView: KMapView) {
         this.mapView = mapView
+        if (initPosition != null) {
+            CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
+                try {
+
+                    mapView.setCameraPosition(
+                        GMSCameraPosition(
+                            initPosition.latitude,
+                            initPosition.longitude,
+                            zoom
+                        ) as objcnames.classes.GMSCameraPosition
+                    )
+                } catch (e: Exception) {
+                    println(e)
+                }
+            }
+        }
     }
 
     actual fun renderRoad(points: String) {

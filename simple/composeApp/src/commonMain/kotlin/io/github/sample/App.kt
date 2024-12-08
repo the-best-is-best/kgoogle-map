@@ -49,6 +49,7 @@ import kotlinx.coroutines.launch
 internal fun App() = AppTheme {
     val mapController = remember {
         KMapController(
+            initPosition = LatLng(30.01306, 31.20885),
             zoom = 15f
 
         )
@@ -64,10 +65,14 @@ internal fun App() = AppTheme {
     BindEffect(controller)
 
 
-    LaunchedEffect(permissionLocation) {
-        controller.providePermission(Permission.LOCATION)
-        permissionLocation = controller.isPermissionGranted(Permission.LOCATION)
 
+
+    LaunchedEffect(permissionLocation) {
+        try {
+            controller.providePermission(Permission.LOCATION)
+            permissionLocation = controller.isPermissionGranted(Permission.LOCATION)
+        } catch (e: Exception) {
+        }
 
     }
 
