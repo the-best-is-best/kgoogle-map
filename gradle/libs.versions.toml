@@ -1,6 +1,6 @@
 [versions]
 accompanistPermissions = "0.36.0"
-klocation = "1.0.1"
+klocation = "1.0.2"
 kotlin = "2.1.0"
 compose = "1.7.1"
 agp = "8.7.0"

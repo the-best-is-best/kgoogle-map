@@ -3,33 +3,25 @@ package io.github.kgooglemap
 import cocoapods.GoogleMaps.GMSCameraPosition
 import cocoapods.KGoogleMap.KMapView
 import cocoapods.KGoogleMap.MarkerData
-import io.github.kgooglemap.services.LocationService
-import io.github.kgooglemap.ui.CameraPosition
 import io.github.kgooglemap.utils.LatLng
 import io.github.kgooglemap.utils.Markers
 import io.github.kgooglemap.utils.toMarkerData
+import io.github.tbib.klocation.KLocationService
 import kotlinx.cinterop.memScoped
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import platform.CoreLocation.CLLocationCoordinate2DMake
 
-actual class KMapController actual constructor(camera: CameraPosition?, markers: List<Markers>?) {
+actual class KMapController actual constructor(zoom: Float, markers: List<Markers>?) {
     private var mapView: KMapView? = null
-    private var userLocation: Pair<Double, Double>? = null
     internal val markers: List<MarkerData>? =
         if (markers.isNullOrEmpty()) null else markers.toMarkerData()
-    private val zoom = if (camera?.zoom != null) camera.zoom + 5 else 15f
-    internal suspend fun init(mapView: KMapView) {
-        this.mapView = mapView
+    val zoom = zoom
 
-        val location = LocationService().getCurrentLocation()
-        userLocation = location
-        mapView.setCameraPosition(
-            GMSCameraPosition(
-                location?.first ?: 0.0,
-                location?.second ?: 0.0,
-                zoom
-            ) as objcnames.classes.GMSCameraPosition
-        )
-        println("mapView initialized: true")
+    internal fun init(mapView: KMapView) {
+        this.mapView = mapView
     }
 
     actual fun renderRoad(points: String) {
@@ -37,13 +29,21 @@ actual class KMapController actual constructor(camera: CameraPosition?, markers:
     }
 
     actual fun resetCamera() {
-        mapView?.setCameraPosition(
-            GMSCameraPosition(
-                userLocation?.first ?: 0.0,
-                userLocation?.second ?: 0.0,
-                zoom
-            ) as objcnames.classes.GMSCameraPosition
-        )
+        CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
+            try {
+                val userLocation = KLocationService().getCurrentLocation()
+                mapView?.setCameraPosition(
+                    GMSCameraPosition(
+                        userLocation.latitude,
+                        userLocation.longitude,
+                        zoom
+                    ) as objcnames.classes.GMSCameraPosition
+                )
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+
 
     }
 

@@ -3,7 +3,6 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -43,8 +42,7 @@ kotlin {
 //        browser()
 //        binaries.executable()
 //    }
-    val xcframeworkName = "CompposeApp"
-    val xcf = XCFramework(xcframeworkName)
+    val xcframeworkName = "ComposeApp"
 
     listOf(
         iosX64(),
@@ -53,8 +51,6 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = xcframeworkName
-            binaryOption("bundleId", "org.example.${xcframeworkName}")
-            xcf.add(this)
             isStatic = true
         }
     }

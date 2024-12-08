@@ -4,7 +4,5 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-	<key>io.kgooglemap.sdk.ApiKey</key>
-	<string></string>
 </dict>
 </plist>

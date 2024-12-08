@@ -1,6 +1,6 @@
 import UIKit
 import ComposeApp
-import KGoogleMap
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -11,10 +11,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
-            
             window.rootViewController = MainKt.MainViewController()
             window.makeKeyAndVisible()
-            
         }
         return true
     }
