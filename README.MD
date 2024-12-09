@@ -22,7 +22,9 @@ KGoogleMap is available on `mavenCentral()`.
 ## Install
 
 ```kotlin
-implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc4")
+implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc5")
+implementation("io.github.the-best-is-best:klocation:1.0.5")
+
 ```
 
 ## Need add this in pod file if not exist run ` pod init `
@@ -38,7 +40,9 @@ implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc4")
 ```kotlin
 fun MainViewController(): UIViewController
 {
+    IOSKLocationServices().requestPermission()
     IOSKGoogleMap.init("YOUR GOOGLE MAP KEY")
+
     return ComposeUIViewController { App() }
 }
 
@@ -48,163 +52,207 @@ fun MainViewController(): UIViewController
 
 ```kotlin
 AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
+setContent {
+    // add this
+    KLocationService().ListenerToPermission()
+    App()
+}
 ```
 
 ### in commonMain
 
 ```kotlin
-   val mapController = remember {
-    KMapController(
-        initPosition = null
-        zoom = 15f
 
-    )
-}
+@Composable
+internal fun App() = AppTheme {
+    val mapController = remember {
+        KMapController(
+            initPosition = LatLng(30.01306, 31.20885),
+            zoom = 15f
 
-var permissionLocation by remember { mutableStateOf(false) }
-
-val factory = rememberPermissionsControllerFactory()
-val controller = remember(factory) {
-    factory.createPermissionsController()
-}
-
-BindEffect(controller)
-
-
-LaunchedEffect(permissionLocation) {
-    controller.providePermission(Permission.LOCATION)
-    permissionLocation = controller.isPermissionGranted(Permission.LOCATION)
-
-
-}
-
-val viewModel = GoogleMapViewModel()
-val scope = rememberCoroutineScope()
-
-Column(
-    modifier = Modifier
-        .fillMaxSize()
-        .windowInsetsPadding(WindowInsets.safeDrawing)
-        .padding(16.dp),
-    horizontalAlignment = Alignment.CenterHorizontally
-) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TypeAhead(
-            itemsProvider = { query -> viewModel.onQueryChanged(query) },
-            itemToString = { it.fullText },
-            onItemSelected = {
-                scope.launch {
-                    viewModel.getPlaceDetails(it.placeId, 1)
-                }
-            }
         )
+    }
 
-        Spacer(Modifier.height(10.dp))
 
-        TypeAhead(
-            itemsProvider = { query -> viewModel.onQueryChanged(query) },
-            itemToString = { it.fullText },
-            onItemSelected = {
-                scope.launch {
-                    viewModel.getPlaceDetails(it.placeId, 2)
+    val viewModel by remember { mutableStateOf(GoogleMapViewModel()) }
+    val scope = rememberCoroutineScope()
+
+    if (viewModel.requestPermission) {
+        KLocationService().EnableLocation()
+        viewModel.requestPermission = false
+    }
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            TypeAhead(
+                itemsProvider = { query -> viewModel.onQueryChanged(query) },
+                itemToString = { it.fullText },
+                onItemSelected = {
+                    scope.launch {
+                        viewModel.getPlaceDetails(it.placeId, 1)
+                    }
                 }
-            }
-        )
-
-        Spacer(Modifier.height(10.dp))
-
-        ElevatedButton(onClick = { viewModel.getRoad() }) {
-            Text("Fetch Road")
-        }
-
-        Box(modifier = Modifier.fillMaxSize()) {
-            KGoogleMapView(controller = mapController)
-
-            Icon(
-                imageVector = Icons.Filled.Restore,
-                contentDescription = "Reset Location",
-                modifier = Modifier
-                    .size(60.dp)
-                    .align(Alignment.TopStart)
-                    .padding(16.dp)
-                    .clickable {
-                        mapController.resetCamera()
-                        println("Reset location")
-                    },
-                tint = Color.Black
             )
 
-            Icon(
-                imageVector = Icons.Filled.Place,
-                contentDescription = "Add Markers",
-                modifier = Modifier
-                    .size(60.dp)
-                    .align(Alignment.TopEnd)
-                    .padding(16.dp)
-                    .clickable {
-                        mapController.addMarkers(
-                            listOf(
-                                Markers(
-                                    LatLng(30.09167, 31.248662),
-                                    "Marker 1",
-                                    "Marker snippet 1"
-                                ),
-                                Markers(
-                                    LatLng(30.10167, 31.250662),
-                                    "Marker 2",
-                                    "Marker snippet 2"
+            Spacer(Modifier.height(10.dp))
+
+            TypeAhead(
+                itemsProvider = { query -> viewModel.onQueryChanged(query) },
+                itemToString = { it.fullText },
+                onItemSelected = {
+                    scope.launch {
+                        viewModel.getPlaceDetails(it.placeId, 2)
+                    }
+                }
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            ElevatedButton(onClick = { viewModel.getRoad() }) {
+                Text("Fetch Road")
+            }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                KGoogleMapView(controller = mapController)
+
+                Icon(
+                    imageVector = Icons.Filled.Restore,
+                    contentDescription = "Reset Location",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .align(Alignment.TopStart)
+                        .padding(16.dp)
+                        .clickable {
+                            mapController.resetCamera()
+                            println("Reset location")
+                        },
+                    tint = Color.Black
+                )
+
+                Icon(
+                    imageVector = Icons.Filled.Place,
+                    contentDescription = "Add Markers",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                        .clickable {
+                            mapController.addMarkers(
+                                listOf(
+                                    Markers(
+                                        LatLng(30.09167, 31.248662),
+                                        "Marker 1",
+                                        "Marker snippet 1"
+                                    ),
+                                    Markers(
+                                        LatLng(30.10167, 31.250662),
+                                        "Marker 2",
+                                        "Marker snippet 2"
+                                    )
                                 )
                             )
-                        )
-                        mapController.goToLocation(LatLng(30.10167, 31.250662))
-                        println("Add markers")
-                    },
-                tint = Color.Black
-            )
+                            mapController.goToLocation(LatLng(30.10167, 31.250662))
+                            println("Add markers")
+                        },
+                    tint = Color.Black
+                )
 
-            Icon(
-                imageVector = Icons.Filled.Remove,
-                contentDescription = "Clear Markers",
-                modifier = Modifier
-                    .size(120.dp)
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-                    .clickable {
-                        mapController.clearMarkers()
-                        println("Clear markers")
-                    },
-                tint = Color.Black
-            )
+                Icon(
+                    imageVector = Icons.Filled.Remove,
+                    contentDescription = "Clear Markers",
+                    modifier = Modifier
+                        .size(120.dp)
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                        .clickable {
+                            mapController.clearMarkers()
+                            println("Clear markers")
+                        },
+                    tint = Color.Black
+                )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .background(Color.White.copy(alpha = 0.7f))
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    onClick = {
-                        val start = viewModel.selectedAddress1
-                        val end = viewModel.selectedAddress2
-                        val directions = viewModel.directions
-
-                        if (start != null && end != null && directions != null) {
-                            mapController.goToLocation(
-                                LatLng(
-                                    start.latitude!!,
-                                    start.longitude!!
-                                )
-                            )
-                            mapController.renderRoad(directions.routes.first().overview_polyline.points)
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .background(Color.White.copy(alpha = 0.7f))
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text("Render Road", color = Color.White, fontSize = 14.sp)
+                    Button(
+                        onClick = {
+                            val start = viewModel.selectedAddress1
+                            val end = viewModel.selectedAddress2
+                            val directions = viewModel.directions
+
+                            if (start != null && end != null && directions != null) {
+                                mapController.goToLocation(
+                                    LatLng(
+                                        start.latitude!!,
+                                        start.longitude!!
+                                    )
+                                )
+                                mapController.renderRoad(directions.routes.first().overview_polyline.points)
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                    ) {
+                        Text("Render Road", color = Color.White, fontSize = 14.sp)
+                    }
                 }
             }
+        }
+    }
+
+    TopToast(
+        isVisible = !viewModel.isGPSEnabled,
+        message = "GPS is not active. Tap to enable.",
+        onClick = {
+            viewModel.enableGPSAndLocation()
+        }
+    )
+
+}
+
+@Composable
+fun TopToast(
+    message: String,
+    isVisible: Boolean,
+    onClick: () -> Unit,
+) {
+
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.error,
+                    shape = MaterialTheme.shapes.medium
+                )
+                .clickable {
+                    onClick()
+                }
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.onError,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
@@ -223,6 +271,21 @@ class GoogleMapViewModel : ViewModel() {
     var directions: DirectionsResponse? = null
         private set
 
+    private val locationService = KLocationService()
+
+    var isGPSEnabled by mutableStateOf(true)
+        private set
+
+    var requestPermission by mutableStateOf(false)
+
+    init {
+        viewModelScope.launch {
+            locationService.gpsStateFlow().collect { gps ->
+                isGPSEnabled = gps
+            }
+        }
+    }
+
     // Function that will be called from the composable
     suspend fun onQueryChanged(query: String): List<AutocompleteSuggestion> {
         debounceJob?.cancel() // Cancel any ongoing job
@@ -233,6 +296,10 @@ class GoogleMapViewModel : ViewModel() {
         } else {
             emptyList()
         }
+    }
+
+    fun enableGPSAndLocation() {
+        requestPermission = true
     }
 
     private suspend fun fetchSuggestions(query: String): List<AutocompleteSuggestion> {
@@ -276,7 +343,6 @@ class GoogleMapViewModel : ViewModel() {
         }
     }
 }
-
 ```
 
 ### controller functionality

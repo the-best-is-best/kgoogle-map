@@ -75,6 +75,8 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.serialization.json)
 
+            implementation(libs.klocation)
+
 
         }
 
@@ -100,15 +102,6 @@ kotlin {
     }
 }
 
-dependencies {
-
-    commonMainApi(libs.permissions)
-
-    // compose multiplatform
-    commonMainApi(libs.permissions.compose) // permissions api + compose extensions
-
-    commonTestImplementation(libs.permissions.test)
-}
 
 android {
     namespace = "io.github.sample"

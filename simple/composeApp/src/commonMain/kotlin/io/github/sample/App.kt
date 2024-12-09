@@ -1,5 +1,8 @@
 package io.github.sample
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,7 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
@@ -21,28 +27,25 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.icerock.moko.permissions.Permission
-import dev.icerock.moko.permissions.compose.BindEffect
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import io.github.kgooglemap.KMapController
 import io.github.kgooglemap.ui.KGoogleMapView
 import io.github.kgooglemap.utils.LatLng
 import io.github.kgooglemap.utils.Markers
 import io.github.sample.theme.AppTheme
 import io.github.sample.ui.TypeAhead
+import io.github.tbib.klocation.KLocationService
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,29 +58,15 @@ internal fun App() = AppTheme {
         )
     }
 
-    var permissionLocation by remember { mutableStateOf(false) }
 
-    val factory = rememberPermissionsControllerFactory()
-    val controller = remember(factory) {
-        factory.createPermissionsController()
-    }
-
-    BindEffect(controller)
-
-
-
-
-    LaunchedEffect(permissionLocation) {
-        try {
-            controller.providePermission(Permission.LOCATION)
-            permissionLocation = controller.isPermissionGranted(Permission.LOCATION)
-        } catch (e: Exception) {
-        }
-
-    }
-
-    val viewModel = GoogleMapViewModel()
+    val viewModel by remember { mutableStateOf(GoogleMapViewModel()) }
     val scope = rememberCoroutineScope()
+
+    if (viewModel.requestPermission) {
+        KLocationService().EnableLocation()
+        viewModel.requestPermission = false
+    }
+
 
     Column(
         modifier = Modifier
@@ -207,4 +196,48 @@ internal fun App() = AppTheme {
         }
     }
 
+    TopToast(
+        isVisible = !viewModel.isGPSEnabled,
+        message = "GPS is not active. Tap to enable.",
+        onClick = {
+            viewModel.enableGPSAndLocation()
+        }
+    )
+
+}
+
+@Composable
+fun TopToast(
+    message: String,
+    isVisible: Boolean,
+    onClick: () -> Unit,
+) {
+
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth().safeDrawingPadding().safeGesturesPadding().safeContentPadding()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.error,
+                    shape = MaterialTheme.shapes.medium
+                )
+                .clickable {
+                    onClick()
+                }
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.onError,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
 }

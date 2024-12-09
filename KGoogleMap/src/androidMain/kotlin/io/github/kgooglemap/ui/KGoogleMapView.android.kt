@@ -1,16 +1,9 @@
 package io.github.kgooglemap.ui
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.location.LocationManager
-import android.os.Build
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,10 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.AdvancedMarker
@@ -42,7 +32,6 @@ actual fun KGoogleMapView(
     controller: KMapController
 ) {
     var currentUserLocation by remember { mutableStateOf<Location?>(null) }
-    val context = LocalContext.current
     val cameraPositionState = rememberCameraPositionState { position }
     val coroutineScope = rememberCoroutineScope()
     val locationService = KLocationService()
@@ -51,62 +40,41 @@ actual fun KGoogleMapView(
         controller.initCamera(cameraPositionState)
     }
 
-    val locationPermissionState = rememberPermissionState(
-        android.Manifest.permission.ACCESS_FINE_LOCATION
-    )
+
     var isCameraMoved by remember { mutableStateOf(false) } // Flag to track if the camera has moved
 
 
-    // Register BroadcastReceiver to listen for location service changes
-    DisposableEffect(context) {
-        val locationReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent?) {
-                if (intent != null && intent.action == LocationManager.PROVIDERS_CHANGED_ACTION) {
-                    if (locationService.isLocationEnabled() && locationPermissionState.status.isGranted) {
-                        coroutineScope.launch {
-                            locationService.startLocationUpdates().collect { newLocation ->
-                                if (currentUserLocation != newLocation) {
-                                    currentUserLocation = newLocation
-                                    // Move the camera only if it hasn't been moved already
-                                    if (!isCameraMoved) {
-                                        cameraPositionState.move(
-                                            CameraUpdateFactory.newLatLngZoom(
-                                                LatLng(newLocation.latitude, newLocation.longitude),
-                                                15f // Zoom level (adjust as needed)
-                                            )
-                                        )
-                                        isCameraMoved =
-                                            true // Set flag to true after the first move
-                                    }
-                                }
+    LaunchedEffect(Unit) {
+        locationService.gpsStateFlow().collect { gps ->
+            if (gps) {
+                coroutineScope.launch {
+                    locationService.startLocationUpdates().collect { newLocation ->
+                        if (currentUserLocation != newLocation) {
+                            currentUserLocation = newLocation
+                            // Move the camera only if it hasn't been moved already
+                            if (!isCameraMoved) {
+                                cameraPositionState.move(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                        LatLng(newLocation.latitude, newLocation.longitude),
+                                        15f // Zoom level (adjust as needed)
+                                    )
+                                )
+                                isCameraMoved =
+                                    true // Set flag to true after the first move
                             }
                         }
-                    } else {
-                        Log.e(
-                            "KGoogleMapView",
-                            "Location services are disabled or permission not granted"
-                        )
-                        // Optionally, show a UI alert or Toast to notify the user.
                     }
                 }
-            }
-        }
-
-        // Registering receiver for Android O and newer
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                context.registerReceiver(
-                    locationReceiver,
-                    IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION),
-                    Context.RECEIVER_NOT_EXPORTED
+            } else {
+                locationService.enableLocation()
+                Log.e(
+                    "KGoogleMapView",
+                    "Location services are disabled or permission not granted"
                 )
+                // Optionally, show a UI alert or Toast to notify the user.
             }
         }
 
-        // Clean up when composable is disposed
-        onDispose {
-            context.unregisterReceiver(locationReceiver)
-        }
     }
 
     // Render the map with user location and other overlays

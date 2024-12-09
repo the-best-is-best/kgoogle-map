@@ -39,16 +39,19 @@ actual class KMapController actual constructor(
 
         if (initPosition != null) {
             CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-
-                cameraPositionState?.animate(
-                    com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
-                        com.google.android.gms.maps.model.LatLng(
-                            initPosition.latitude,
-                            initPosition.longitude
-                        ),
-                        zoom // Adjust the zoom level as needed
+                try {
+                    KLocationService().getCurrentLocation()
+                } catch (e: Exception) {
+                    cameraPositionState?.animate(
+                        com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(
+                            com.google.android.gms.maps.model.LatLng(
+                                initPosition.latitude,
+                                initPosition.longitude
+                            ),
+                            zoom // Adjust the zoom level as needed
+                        )
                     )
-                )
+                }
             }
         }
 

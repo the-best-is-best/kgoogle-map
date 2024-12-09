@@ -1,5 +1,8 @@
 package io.github.sample
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.kgooglemap.KPlacesHelper
@@ -7,6 +10,7 @@ import io.github.kgooglemap.utils.AutocompleteSuggestion
 import io.github.kgooglemap.utils.PlaceDetails
 import io.github.sample.data.api.KtorServices
 import io.github.sample.data.model.DirectionsResponse
+import io.github.tbib.klocation.KLocationService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -30,6 +34,21 @@ class GoogleMapViewModel : ViewModel() {
     var directions: DirectionsResponse? = null
         private set
 
+    private val locationService = KLocationService()
+
+    var isGPSEnabled by mutableStateOf(true)
+        private set
+
+    var requestPermission by mutableStateOf(false)
+
+    init {
+        viewModelScope.launch {
+            locationService.gpsStateFlow().collect { gps ->
+                isGPSEnabled = gps
+            }
+        }
+    }
+
     // Function that will be called from the composable
     suspend fun onQueryChanged(query: String): List<AutocompleteSuggestion> {
         debounceJob?.cancel() // Cancel any ongoing job
@@ -40,6 +59,10 @@ class GoogleMapViewModel : ViewModel() {
         } else {
             emptyList()
         }
+    }
+
+    fun enableGPSAndLocation() {
+        requestPermission = true
     }
 
     private suspend fun fetchSuggestions(query: String): List<AutocompleteSuggestion> {

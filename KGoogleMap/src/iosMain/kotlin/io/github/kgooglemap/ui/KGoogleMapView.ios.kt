@@ -13,6 +13,7 @@ actual fun KGoogleMapView(controller: KMapController) {
 
     var mapView: KMapView? = null
 
+
     // Use LaunchedEffect to ensure the initialization runs only once
     LaunchedEffect(Unit) {
         if (mapView != null) {
