@@ -29,10 +29,7 @@ actual class KMapController actual constructor(
         this.mapView = mapView
         CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
 
-            KLocationService().gpsStateFlow().collect { gps ->
-                println("GPS is $gps")
 
-            }
             if (initPosition != null) {
                 try {
                     mapView.setCameraPosition(
