@@ -41,7 +41,7 @@ tasks.withType<PublishToMavenRepository> {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.0.1-rc5")
+    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.0.1")
 
     publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
