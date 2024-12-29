@@ -2,7 +2,7 @@
 accompanistPermissions = "0.36.0"
 klocation = "1.0.6"
 kotlin = "2.1.0"
-compose = "1.7.1"
+compose = "1.7.3"
 agp = "8.7.0"
 androidx-activityCompose = "1.9.3"
 androidx-uiTest = "1.7.5"

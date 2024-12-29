@@ -105,7 +105,13 @@ internal fun App() = AppTheme {
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                KGoogleMapView(controller = mapController)
+                KGoogleMapView(
+                    controller = mapController,
+                    onMapClick = {
+                        println("click loc :${it}")
+                    }
+
+                )
 
                 Icon(
                     imageVector = Icons.Filled.Restore,

@@ -7,10 +7,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.UIKitView
 import cocoapods.KGoogleMap.KMapView
 import io.github.kgooglemap.KMapController
+import io.github.kgooglemap.utils.LatLng
 
 @Composable
-actual fun KGoogleMapView(controller: KMapController) {
-
+actual fun KGoogleMapView(
+    controller: KMapController,
+    onMapClick: ((LatLng) -> Unit)?,
+    onMapLongClick: ((LatLng) -> Unit)?
+) {
     var mapView: KMapView? = null
 
 
@@ -32,5 +36,4 @@ actual fun KGoogleMapView(controller: KMapController) {
         modifier = Modifier.fillMaxSize()
     )
 }
-
 

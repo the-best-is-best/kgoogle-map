@@ -29,7 +29,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 actual fun KGoogleMapView(
-    controller: KMapController
+    controller: KMapController,
+    onMapClick: ((io.github.kgooglemap.utils.LatLng) -> Unit)?,
+    onMapLongClick: ((io.github.kgooglemap.utils.LatLng) -> Unit)?
 ) {
     var currentUserLocation by remember { mutableStateOf<Location?>(null) }
     val cameraPositionState = rememberCameraPositionState { position }
@@ -81,7 +83,18 @@ actual fun KGoogleMapView(
     Box(modifier = Modifier.fillMaxSize()) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            onMapClick = {
+                val latLng =
+                    io.github.kgooglemap.utils.LatLng(it.latitude, it.longitude)
+                onMapClick?.invoke(latLng)
+            },
+            onMapLongClick = {
+                val latLng =
+                    io.github.kgooglemap.utils.LatLng(it.latitude, it.longitude)
+                onMapLongClick?.invoke(latLng)
+
+            }
         ) {
             // Display user location if it exists and permission is granted
             if (controller.showUserLocation && currentUserLocation != null) {
