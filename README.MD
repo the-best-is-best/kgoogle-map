@@ -17,7 +17,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.the-best-is-best/kgoogle-map)](https://central.sonatype.com/artifact/io.github.the-best-is-best/kgoogle-map)
 
 KGoogleMap is available on `mavenCentral()`.
-![Demo](git_assets/video.gif)
+
+[![Thumbnail](https://img.youtube.com/vi/eF-OnkJoI0U/0.jpg)](https://www.youtube.com/watch?v=eF-OnkJoI0U)
 
 ## Install
 
