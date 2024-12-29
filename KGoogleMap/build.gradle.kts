@@ -41,7 +41,7 @@ tasks.withType<PublishToMavenRepository> {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.0.1")
+    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.0.2")
 
     publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
@@ -145,7 +145,7 @@ kotlin {
         ios.deploymentTarget = "15.0"  // Update this to the required version
 
         pod("KGoogleMap") {
-            version = "0.1.2-rc.1"
+            version = "0.1.5"
             extraOpts += listOf("-compiler-option", "-fmodules")
         }
         pod("GooglePlaces") {

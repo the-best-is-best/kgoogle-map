@@ -107,8 +107,15 @@ internal fun App() = AppTheme {
             Box(modifier = Modifier.fillMaxSize()) {
                 KGoogleMapView(
                     controller = mapController,
+                    onMapLoaded = {
+                        println("map loaded")
+                    },
                     onMapClick = {
                         println("click loc :${it}")
+                    },
+                    onMapLongClick = {
+                        println("long click loc :${it}")
+
                     }
 
                 )

@@ -23,15 +23,15 @@ KGoogleMap is available on `mavenCentral()`.
 ## Install
 
 ```kotlin
-implementation("io.github.the-best-is-best:kgoogle-map:1.0.1-rc5")
-implementation("io.github.the-best-is-best:klocation:1.0.5")
+implementation("io.github.the-best-is-best:kgoogle-map:1.0.2")
+implementation("io.github.the-best-is-best:klocation:1.0.6")
 
 ```
 
 ## Need add this in pod file if not exist run ` pod init `
 
 ```pod
-  pod 'KGoogleMap', '0.1.2-rc.1'
+  pod 'KGoogleMap', '0.1.5'
 ```
 
 ## How to use it
@@ -121,7 +121,19 @@ internal fun App() = AppTheme {
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                KGoogleMapView(controller = mapController)
+                KGoogleMapView(
+                    controller = mapController,
+                    onMapLoaded ={
+                        println("map loaded")
+                    },
+                    onMapClick = {
+                        println("click loc :${it}")
+                    },
+                    onMapLongClick = {
+                        println("long click loc :${it}")
+
+                    }
+                )
 
                 Icon(
                     imageVector = Icons.Filled.Restore,

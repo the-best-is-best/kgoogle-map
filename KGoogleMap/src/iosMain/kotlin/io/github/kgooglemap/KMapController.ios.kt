@@ -37,14 +37,16 @@ actual class KMapController actual constructor(
                             initPosition.latitude,
                             initPosition.longitude,
                             zoom
-                        ) as objcnames.classes.GMSCameraPosition
+                        ) as cocoapods.KGoogleMap.GMSCameraPosition
                     )
                 } catch (e: Exception) {
                     println(e)
                 }
             }
         }
+
     }
+
 
     actual fun renderRoad(points: String) {
         mapView?.renderRoad(points)
@@ -59,7 +61,7 @@ actual class KMapController actual constructor(
                         userLocation.latitude,
                         userLocation.longitude,
                         zoom
-                    ) as objcnames.classes.GMSCameraPosition
+                    ) as cocoapods.KGoogleMap.GMSCameraPosition
                 )
             } catch (e: Exception) {
                 println(e)

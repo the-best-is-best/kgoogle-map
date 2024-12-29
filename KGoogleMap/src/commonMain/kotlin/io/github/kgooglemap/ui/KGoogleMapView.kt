@@ -7,6 +7,7 @@ import io.github.kgooglemap.utils.LatLng
 @Composable
 expect fun KGoogleMapView(
     controller: KMapController,
+    onMapLoaded: (() -> Unit)? = null,
     onMapClick: ((LatLng) -> Unit)? = null,
     onMapLongClick: ((LatLng) -> Unit)? = null
 

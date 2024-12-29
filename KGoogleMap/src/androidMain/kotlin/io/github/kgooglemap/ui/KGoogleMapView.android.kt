@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 @Composable
 actual fun KGoogleMapView(
     controller: KMapController,
+    onMapLoaded: (() -> Unit)?,
     onMapClick: ((io.github.kgooglemap.utils.LatLng) -> Unit)?,
     onMapLongClick: ((io.github.kgooglemap.utils.LatLng) -> Unit)?
 ) {
@@ -84,6 +85,7 @@ actual fun KGoogleMapView(
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
+            onMapLoaded = onMapLoaded,
             onMapClick = {
                 val latLng =
                     io.github.kgooglemap.utils.LatLng(it.latitude, it.longitude)
