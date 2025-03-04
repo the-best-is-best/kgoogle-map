@@ -126,12 +126,19 @@ kotlin {
             baseName = "KGoogleMap"
             isStatic = true
 
+
+            binaryOption("bundleId", "io.github.KGoogleMap")
         }
         it.compilations["main"].cinterops {
-            val map by creating {
+            val kgooglemap by creating {
                 defFile(project.file("interop/kgooglemap.def"))
                 packageName("io.github.native.kgooglemap")
             }
+//
+//            val googlemap by creating {
+//                defFile(project.file("interop/googlemap.def"))
+//                packageName("io.github.native.googlemap")
+//            }
         }
     }
 
@@ -191,7 +198,6 @@ kotlin {
 //        }
 
         iosMain.dependencies {
-            implementation(files("KGoogleMap.xcframework"))
 
         }
 

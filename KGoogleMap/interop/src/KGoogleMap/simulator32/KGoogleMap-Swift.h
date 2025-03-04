@@ -307,6 +307,17 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 #if defined(__OBJC__)
 
+SWIFT_CLASS("_TtC10KGoogleMap14CameraPosition")
+@interface CameraPosition : NSObject
+@property (nonatomic) double latitude;
+@property (nonatomic) double longitude;
+@property (nonatomic) float zoom;
+- (nonnull instancetype)initWithLatitude:(double)latitude longitude:(double)longitude zoom:(float)zoom OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 @class NSString;
 
 SWIFT_CLASS("_TtC10KGoogleMap14KGoogleMapInit")
@@ -317,8 +328,8 @@ SWIFT_CLASS("_TtC10KGoogleMap14KGoogleMapInit")
 
 @class MarkerData;
 @class NSCoder;
-@class GMSCameraPosition;
 @class LocationData;
+
 
 SWIFT_CLASS("_TtC10KGoogleMap8KMapView")
 @interface KMapView : UIView
@@ -327,8 +338,8 @@ SWIFT_CLASS("_TtC10KGoogleMap8KMapView")
 - (void)updateMarkers:(NSArray<MarkerData *> * _Nonnull)markers;
 - (void)renderRoad:(NSString * _Nonnull)points;
 - (void)clearMarkers;
-- (void)zoomToLocation:()location zoom:(float)zoom;
-- (void)setCameraPosition:(GMSCameraPosition * _Nonnull)cameraPosition;
+- (void)zoomToLocation:(CLLocationCoordinate2D)location zoom:(float)zoom;
+- (void)setCameraPosition:(CameraPosition * _Nonnull)cameraPosition;
 - (void)showUserLocation:(BOOL)show;
 - (void)setRouteVisibility:(BOOL)visible;
 - (void)showSearch;

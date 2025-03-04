@@ -1,6 +1,5 @@
 #ifndef KGoogleMapWrapper_h
 #define KGoogleMapWrapper_h
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
