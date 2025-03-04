@@ -1,0 +1,42 @@
+{
+  "originHash" : "dfeefe473c5f733fde673a796864812ff70e03bb19614fd64f5ba2c79730c445",
+  "pins" : [
+    {
+      "identity" : "google-maps-ios-utils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googlemaps/google-maps-ios-utils.git",
+      "state" : {
+        "revision" : "22c6e764d14daaf5de2aa4a3700bc2e9dccae5ac",
+        "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "ios-maps-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googlemaps/ios-maps-sdk.git",
+      "state" : {
+        "revision" : "9fa352d6eca4a731949efcdb27ed851f1fcd4447",
+        "version" : "9.3.0"
+      }
+    },
+    {
+      "identity" : "ios-places-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googlemaps/ios-places-sdk.git",
+      "state" : {
+        "revision" : "d4f4b9b3b6c45452f94cee45d64cf60f2fa174dc",
+        "version" : "9.3.0"
+      }
+    },
+    {
+      "identity" : "kgooglemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/the-best-is-best/KGoogleMap",
+      "state" : {
+        "revision" : "de01deb0d9bed9820cfbdc4f9dc6ebc791b03f88",
+        "version" : "0.1.7"
+      }
+    }
+  ],
+  "version" : 3
+}

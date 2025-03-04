@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.native.cocoapods)
+//    alias(libs.plugins.native.cocoapods)
     id("maven-publish")
     id("signing")
     alias(libs.plugins.maven.publish)
@@ -127,40 +127,14 @@ kotlin {
             isStatic = true
 
         }
+        it.compilations["main"].cinterops {
+            val map by creating {
+                defFile(project.file("interop/kgooglemap.def"))
+                packageName("io.github.native.kgooglemap")
+            }
+        }
     }
 
-    cocoapods {
-        version = "1.0"
-        summary = "Some description for a Kotlin/Native module"
-        homepage = "Link to a Kotlin/Native module homepage"
-
-        // Optional properties
-        // Configure the Pod name here instead of changing the Gradle project name
-        name = "KGoogleMap"
-
-        framework {
-            baseName = "KGoogleMap"
-        }
-        noPodspec()
-        ios.deploymentTarget = "15.0"  // Update this to the required version
-
-        pod("KGoogleMap") {
-            version = "0.1.5"
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-        pod("GooglePlaces") {
-            version = "9.2.0"
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-
-        pod("GoogleMaps"){
-            version = "9.2.0"
-            extraOpts += listOf("-compiler-option", "-fmodules")
-
-        }
-
-
-    }
 
 
 
@@ -217,9 +191,12 @@ kotlin {
 //        }
 
         iosMain.dependencies {
+            implementation(files("KGoogleMap.xcframework"))
+
         }
 
     }
+
 }
 
 android {

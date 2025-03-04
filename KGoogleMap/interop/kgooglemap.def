@@ -1,0 +1,10 @@
+
+language = Objective-C
+headers =  /Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap/KGoogleMap-Swift.h
+compilerOpts = \
+    -I/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap \
+    -I/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap/GooglePlaces
+
+
+linkerOpts = -framework KGoogleMap
+
