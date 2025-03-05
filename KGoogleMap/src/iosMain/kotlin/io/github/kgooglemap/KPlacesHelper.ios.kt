@@ -1,6 +1,13 @@
 package io.github.kgooglemap
 
-//import io.github.native.kgooglemap.*
+//import io.github.native.google_places.*
+//import io.github.native.google_places.GMSAutocompleteFilter
+//import io.github.native.google_places.GMSAutocompletePrediction
+//import io.github.native.google_places.GMSAutocompleteSessionToken
+//import io.github.native.google_places.GMSPlace
+//import io.github.native.google_places.GMSPlacesClient
+
+
 
 import io.github.kgooglemap.utils.AutocompleteSuggestion
 import io.github.kgooglemap.utils.PlaceDetails
@@ -18,7 +25,7 @@ actual class KPlacesHelper actual constructor() {
         if (query.length > 2) {
 //            val filter = GMSAutocompleteFilter()
 //            filter.type =
-//                cocoapods.GooglePlaces.GMSPlacesAutocompleteTypeFilter.kGMSPlacesAutocompleteTypeFilterNoFilter // No filter applied
+//                GMSPlacesAutocompleteTypeFilter.kGMSPlacesAutocompleteTypeFilterNoFilter // No filter applied
 //
 //            placesClient.findAutocompletePredictionsFromQuery(
 //                query,
@@ -37,7 +44,7 @@ actual class KPlacesHelper actual constructor() {
 //                    )
 //                }
 //                onResult(suggestions)
-            //}
+//            }
         } else {
             onResult(emptyList())
         }

@@ -6,7 +6,3 @@ headers =  /Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/K
 compilerOpts = \
     -I/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap \
     -I/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap/GooglePlaces
-
-
-linkerOpts = -framework KGoogleMap
-

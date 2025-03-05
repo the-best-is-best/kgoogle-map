@@ -1,0 +1,3 @@
+package = io.github.native.google_places
+language = Objective-C
+headers = /Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/GooglePlaces/GooglePlaces-Swift.h

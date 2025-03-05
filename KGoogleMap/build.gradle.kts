@@ -134,11 +134,11 @@ kotlin {
                 defFile(project.file("interop/kgooglemap.def"))
                 packageName("io.github.native.kgooglemap")
             }
-//
-//            val googlemap by creating {
-//                defFile(project.file("interop/googlemap.def"))
-//                packageName("io.github.native.googlemap")
-//            }
+
+            val googleplaces by creating {
+                defFile(project.file("interop/google_places.def"))
+                packageName("io.github.native.google_places")
+            }
         }
     }
 
