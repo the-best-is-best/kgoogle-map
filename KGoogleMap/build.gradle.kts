@@ -140,12 +140,12 @@ kotlin {
                 packageName("io.github.native.google_places")
             }
         }
+
     }
 
 
-
-
     sourceSets {
+
         all {
             languageSettings.apply {
 
