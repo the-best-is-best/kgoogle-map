@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.native.cocoapods)
+//    alias(libs.plugins.native.cocoapods)
     id("maven-publish")
     id("signing")
     alias(libs.plugins.maven.publish)
@@ -41,7 +41,7 @@ tasks.withType<PublishToMavenRepository> {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.0.2")
+    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.1.0")
 
     publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
@@ -126,45 +126,26 @@ kotlin {
             baseName = "KGoogleMap"
             isStatic = true
 
+
+            binaryOption("bundleId", "io.github.KGoogleMap")
         }
-    }
+        it.compilations["main"].cinterops {
+            val kgooglemap by creating {
+                defFile(project.file("interop/kgooglemap.def"))
+                packageName("io.github.native.kgooglemap")
+            }
 
-    cocoapods {
-        version = "1.0"
-        summary = "Some description for a Kotlin/Native module"
-        homepage = "Link to a Kotlin/Native module homepage"
-
-        // Optional properties
-        // Configure the Pod name here instead of changing the Gradle project name
-        name = "KGoogleMap"
-
-        framework {
-            baseName = "KGoogleMap"
+            val googleplaces by creating {
+                defFile(project.file("interop/google_places.def"))
+                packageName("io.github.native.google_places")
+            }
         }
-        noPodspec()
-        ios.deploymentTarget = "15.0"  // Update this to the required version
-
-        pod("KGoogleMap") {
-            version = "0.1.5"
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-        pod("GooglePlaces") {
-            version = "9.2.0"
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-
-        pod("GoogleMaps"){
-            version = "9.2.0"
-            extraOpts += listOf("-compiler-option", "-fmodules")
-
-        }
-
 
     }
-
 
 
     sourceSets {
+
         all {
             languageSettings.apply {
 
@@ -217,9 +198,11 @@ kotlin {
 //        }
 
         iosMain.dependencies {
+
         }
 
     }
+
 }
 
 android {

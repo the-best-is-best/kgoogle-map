@@ -1,4 +1,5 @@
-<h1 align="center">KGoogleMap</h1><br>
+# KGoogleMap
+
 <div align="center">
 <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
 <a href="https://android-arsenal.com/api?level=23" rel="nofollow">
@@ -16,27 +17,30 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.the-best-is-best/kgoogle-map)](https://central.sonatype.com/artifact/io.github.the-best-is-best/kgoogle-map)
 
-KGoogleMap is available on `mavenCentral()`.
+KGoogleMap is available on mavenCentral().
 
 [![Thumbnail](https://img.youtube.com/vi/eF-OnkJoI0U/0.jpg)](https://www.youtube.com/watch?v=eF-OnkJoI0U)
 
 ## Install
 
 ```kotlin
-implementation("io.github.the-best-is-best:kgoogle-map:1.0.2")
+implementation("io.github.the-best-is-best:kgoogle-map:1.1.0")
 implementation("io.github.the-best-is-best:klocation:1.0.6")
-
 ```
 
-## Need add this in pod file if not exist run ` pod init `
+## iOS Setup using SPM (Swift Package Manager)
 
-```pod
-  pod 'KGoogleMap', '0.1.5'
+Add the following line in your `Package.swift` file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/the-best-is-best/KGoogleMap.git", from: "1.1.0")
+]
 ```
 
-## How to use it
+### How to use it
 
-### First in iosMain
+#### First in `iosMain`
 
 ```kotlin
 fun MainViewController(): UIViewController
@@ -46,10 +50,9 @@ fun MainViewController(): UIViewController
 
     return ComposeUIViewController { App() }
 }
-
 ```
 
-### Second in android Main
+#### Second in `androidMain`
 
 ```kotlin
 AndroidKGoogleMap.initialization(this, "YOUR GOOGLE MAP KEY")
@@ -60,20 +63,17 @@ setContent {
 }
 ```
 
-### in commonMain
+#### In `commonMain`
 
 ```kotlin
-
 @Composable
 internal fun App() = AppTheme {
     val mapController = remember {
         KMapController(
             initPosition = LatLng(30.01306, 31.20885),
             zoom = 15f
-
         )
     }
-
 
     val viewModel by remember { mutableStateOf(GoogleMapViewModel()) }
     val scope = rememberCoroutineScope()
@@ -82,7 +82,6 @@ internal fun App() = AppTheme {
         KLocationService().EnableLocation()
         viewModel.requestPermission = false
     }
-
 
     Column(
         modifier = Modifier
@@ -131,164 +130,24 @@ internal fun App() = AppTheme {
                     },
                     onMapLongClick = {
                         println("long click loc :${it}")
-
                     }
                 )
-
-                Icon(
-                    imageVector = Icons.Filled.Restore,
-                    contentDescription = "Reset Location",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .align(Alignment.TopStart)
-                        .padding(16.dp)
-                        .clickable {
-                            mapController.resetCamera()
-                            println("Reset location")
-                        },
-                    tint = Color.Black
-                )
-
-                Icon(
-                    imageVector = Icons.Filled.Place,
-                    contentDescription = "Add Markers",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .align(Alignment.TopEnd)
-                        .padding(16.dp)
-                        .clickable {
-                            mapController.addMarkers(
-                                listOf(
-                                    Markers(
-                                        LatLng(30.09167, 31.248662),
-                                        "Marker 1",
-                                        "Marker snippet 1"
-                                    ),
-                                    Markers(
-                                        LatLng(30.10167, 31.250662),
-                                        "Marker 2",
-                                        "Marker snippet 2"
-                                    )
-                                )
-                            )
-                            mapController.goToLocation(LatLng(30.10167, 31.250662))
-                            println("Add markers")
-                        },
-                    tint = Color.Black
-                )
-
-                Icon(
-                    imageVector = Icons.Filled.Remove,
-                    contentDescription = "Clear Markers",
-                    modifier = Modifier
-                        .size(120.dp)
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp)
-                        .clickable {
-                            mapController.clearMarkers()
-                            println("Clear markers")
-                        },
-                    tint = Color.Black
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .background(Color.White.copy(alpha = 0.7f))
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Button(
-                        onClick = {
-                            val start = viewModel.selectedAddress1
-                            val end = viewModel.selectedAddress2
-                            val directions = viewModel.directions
-
-                            if (start != null && end != null && directions != null) {
-                                mapController.goToLocation(
-                                    LatLng(
-                                        start.latitude!!,
-                                        start.longitude!!
-                                    )
-                                )
-                                mapController.renderRoad(directions.routes.first().overview_polyline.points)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
-                    ) {
-                        Text("Render Road", color = Color.White, fontSize = 14.sp)
-                    }
-                }
             }
-        }
-    }
-
-    TopToast(
-        isVisible = !viewModel.isGPSEnabled,
-        message = "GPS is not active. Tap to enable.",
-        onClick = {
-            viewModel.enableGPSAndLocation()
-        }
-    )
-
-}
-
-@Composable
-fun TopToast(
-    message: String,
-    isVisible: Boolean,
-    onClick: () -> Unit,
-) {
-
-
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.error,
-                    shape = MaterialTheme.shapes.medium
-                )
-                .clickable {
-                    onClick()
-                }
-                .padding(12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.onError,
-                style = MaterialTheme.typography.bodyLarge
-            )
         }
     }
 }
 
 class GoogleMapViewModel : ViewModel() {
-    private var debounceJob: Job? = null
     private val googlePlaces = KPlacesHelper()
-
-
     var selectedAddress1: PlaceDetails? = null
         private set
-
     var selectedAddress2: PlaceDetails? = null
         private set
-
     var directions: DirectionsResponse? = null
         private set
-
     private val locationService = KLocationService()
-
     var isGPSEnabled by mutableStateOf(true)
         private set
-
     var requestPermission by mutableStateOf(false)
 
     init {
@@ -299,12 +158,9 @@ class GoogleMapViewModel : ViewModel() {
         }
     }
 
-    // Function that will be called from the composable
     suspend fun onQueryChanged(query: String): List<AutocompleteSuggestion> {
-        debounceJob?.cancel() // Cancel any ongoing job
-
         return if (query.isNotEmpty()) {
-            delay(500) // Debounce delay
+            delay(500)
             fetchSuggestions(query)
         } else {
             emptyList()
@@ -318,16 +174,13 @@ class GoogleMapViewModel : ViewModel() {
     private suspend fun fetchSuggestions(query: String): List<AutocompleteSuggestion> {
         return withContext(Dispatchers.IO) {
             try {
-                // Use suspendCancellableCoroutine to bridge the callback-based API with Kotlin coroutines
                 suspendCancellableCoroutine { continuation ->
                     googlePlaces.fetchSuggestions(query) { suggestions ->
-                        // Check if suggestions are not null and resume the coroutine with the result
                         continuation.resume(suggestions)
                     }
                 }
             } catch (e: Exception) {
-                // Handle any exceptions that occur during the fetching
-                emptyList() // Return an empty list on error
+                emptyList()
             }
         }
     }
@@ -356,73 +209,3 @@ class GoogleMapViewModel : ViewModel() {
         }
     }
 }
-```
-
-### controller functionality
-
-```kotlin
-  fun resetCamera()
-     fun renderRoad(points: String)
-     fun addMarkers(markers: List<Markers>)
-     fun clearMarkers()
-     fun goToLocation(location: LatLng , zoom:Float = 15f)
-     fun showLocationUser(show:Boolean)
-     fun showRoad(show:Boolean)
-```
-
-### Example use controller
-
-```kotlin
-mapController.addMarkers([]) // sent new list
-mapController.clearMarker() // remove all markers
-
-mapController.goToLocation(location) // camera will move animated to new location
-
-mapController.showLocationUser(show) // can show or hide current location user marker
-
-mapController.renderRoad(points) // for render poly
-
-
- mapController.showRoad(show) // display poly or hide it
-```
-
-## Google places
-
-- Note no ui for search available make custom ui
-
-### Functionality
-
-```kotlin
-expect class KPlacesHelper() {
-    /**
-     * Fetches autocomplete suggestions for a query string.
-     *
-     * @param query The search query string.
-     * @param onResult A callback invoked with a list of suggestions or an empty list if no suggestions are found.
-     */
-    fun fetchSuggestions(query: String, onResult: (List<AutocompleteSuggestion>) -> Unit)
-
-    /**
-     * Fetches detailed information about a place given its place ID.
-     *
-     * @param placeId The ID of the place.
-     * @param onResult A callback invoked with place details or `null` if the fetch operation fails.
-     */
-    fun fetchPlaceDetails(placeId: String, onResult: (PlaceDetails?) -> Unit)
-
-}
-```
-
-### How use it
-
-```kotlin
-  KPlacesHelper().fetchSuggestions(query = "Ramses") {
-                    print(it.size)
-                    val sizeAddress = it.size
-                    if (sizeAddress > 0) {
-                        println(KPlacesHelper().fetchPlaceDetails(it[0].placeId, {
-                            println("data address selected lat ${it?.latitude}")
-                        }))
-                    }
-                }
-```
