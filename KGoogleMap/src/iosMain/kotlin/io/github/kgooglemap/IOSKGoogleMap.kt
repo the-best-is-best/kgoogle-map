@@ -1,7 +1,9 @@
 package io.github.kgooglemap
 
-expect object IOSKGoogleMap {
-    fun init(key: String)
+import io.github.native.kgooglemap.KGoogleMapInit
+
+object IOSKGoogleMap {
+    fun init(key: String) {
+        KGoogleMapInit.provideAPIKeyWithKey(key)
+    }
 }
-
-
