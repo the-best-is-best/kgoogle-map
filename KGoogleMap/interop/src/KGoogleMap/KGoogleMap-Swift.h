@@ -7,11 +7,11 @@
 #import "GooglePlaces/GMSAutocompleteViewController.h"
 
 #if defined(__arm64__) && __arm64__
-    #import "simulator64/KGoogleMap-Swift.h"
+    #import "/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap/simulator64/KGoogleMap-Swift.h"
 #elif defined(__x86_64__) && __x86_64__
       #import "/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap/simulator32/KGoogleMap-Swift.h"
 #else
-     #import "ios/KGoogleMap-Swift.h"
+     #import "/Users/michelleraouf/Desktop/kmm/kgoogle-map/KGoogleMap/interop/src/KGoogleMap/ios/KGoogleMap-Swift.h"
 
 #endif
 #endif /* KGoogleMapWrapper_h */
