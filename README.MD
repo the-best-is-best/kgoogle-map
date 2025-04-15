@@ -25,8 +25,6 @@ KGoogleMap is available on mavenCentral().
 
 ```kotlin
 implementation("io.github.the-best-is-best:kgoogle-map:1.1.1")
-// Note after 1.1.1 will not need add klocation will can access it directly
-implementation("io.github.the-best-is-best:klocation:1.0.6")
 ```
 
 ## iOS Setup using SPM (Swift Package Manager)

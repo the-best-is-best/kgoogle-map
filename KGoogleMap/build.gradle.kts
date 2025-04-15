@@ -2,8 +2,6 @@ import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.getCurrentOperatingSystem
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -41,7 +39,7 @@ tasks.withType<PublishToMavenRepository> {
 
 
 mavenPublishing {
-    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.1.0")
+    coordinates("io.github.the-best-is-best", "kgoogle-map", "1.1.1")
 
     publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
@@ -84,24 +82,10 @@ signing {
 
 
 kotlin {
+    jvmToolchain(17)
     androidTarget {
-        compilations.all {
-            compileTaskProvider {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_17)
-                    freeCompilerArgs.add("-Xjdk-release=${JavaVersion.VERSION_17}")
-                }
-            }
-        }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        instrumentedTestVariant {
-            sourceSetTree.set(KotlinSourceSetTree.test)
-            dependencies {
-                debugImplementation(libs.androidx.testManifest)
-                implementation(libs.androidx.junit4)
-            }
-        }
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
     }
 
 //    jvm()
